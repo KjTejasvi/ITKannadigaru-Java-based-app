@@ -6,7 +6,7 @@ pipeline{
         maven 'maven'
     }
 
-    environmrent{
+    environment{
         IMAGE_NAME='KjTejasvi/itkannadigaru-blogpost: ${GIT_COMMIT}'
     }
     stages{
