@@ -7,7 +7,7 @@ pipeline{
     }
 
     environment{
-        IMAGE_NAME='kjtejasvi/itkannadigaru-blogpost: ${GIT_COMMIT}'
+        IMAGE_NAME='kjtejasvi/itkannadigaru-blogpost:${GIT_COMMIT}'
     }
     stages{
         stage('Git-checkout'){
