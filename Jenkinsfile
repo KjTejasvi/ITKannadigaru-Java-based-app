@@ -1,73 +1,49 @@
 pipeline{
-    agent any // decided which node to run
+    agent any
 
-    tools {
+    tools{
         jdk 'java-17'
         maven 'maven'
     }
 
-    environment {
-        IMAGE_NAME = "manojkrishnappa/itkannadigaru-blogpost:${GIT_COMMIT}"
+    environmrent{
+        IMAGE_NAME='KjTejasvi/itkannadigaru-blogpost: ${GIT_COMMIT}'
     }
-
     stages{
-        stage('git-checkout'){
+        stage('Git-checkout'){
             steps{
-                git url: 'https://github.com/ManojKRISHNAPPA/ITKannadigaru-Java-based-app.git', branch: 'prod'
+                sh'''
+                  git url: https://github.com/KjTejasvi/ITKannadigaru-Java-based-app.git: branch:prod
+                '''
             }
-            
         }
-
-        stage('Compile'){
+        stage('compile'){
             steps{
-                sh '''
+                sh'''
                     mvn compile
                 '''
             }
         }
-        stage('packaging'){
+        stage('package'){
             steps{
-                sh '''
-                    mvn clean package
+                sh'''
+                    mvn package
                 '''
             }
         }
-        stage('docker-build'){
+        stage('Docker-build'){
             steps{
-                sh '''
-                    printenv
-                    docker build -t ${IMAGE_NAME} .
+                sh'''
+                  docker build -t ${IMAGE_NAME} .
                 '''
             }
         }
-        stage('Docker-testing'){
+        stage('Docker-Testing'){
             steps{
-                sh '''
-                    docker kill itkannadigaru-blogpost-test
-                    docker rm itkannadigaru-blogpost-test
-                    docker run -it -d --name itkannadigaru-blogpost-test -p 9000:8080 ${IMAGE_NAME}
-                '''
-            }
-        }   
-
-        stage('Login to Docker Hub') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        // Login to Docker Hub
-                        sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
-                    }
-                }
-            }
-        }  
-
-        stage('Push to dockerhub'){
-            steps{
-                sh '''
-                    docker push ${IMAGE_NAME}
+                sh'''
+                  docker run -it -d --name itkannadigaru-blogpost -p 9000:8080 ${IMAGE_NAME}
                 '''
             }
         }
-
     }
 }
