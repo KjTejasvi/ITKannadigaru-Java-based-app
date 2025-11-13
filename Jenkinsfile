@@ -13,7 +13,7 @@ pipeline{
         stage('Git-checkout'){
             steps{
                 sh'''
-                  git url: https://github.com/KjTejasvi/ITKannadigaru-Java-based-app.git: branch:prod
+                  git url: 'https://github.com/KjTejasvi/ITKannadigaru-Java-based-app.git', branch:'prod'
                 '''
             }
         }
