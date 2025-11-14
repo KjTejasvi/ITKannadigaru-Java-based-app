@@ -45,7 +45,7 @@ pipeline{
                 '''
             }
         }
-        stage(Docker-Push){
+        stage('Docker-Push'){
             steps{
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]){
                     sh'''
